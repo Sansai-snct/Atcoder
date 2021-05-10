@@ -9,7 +9,7 @@ int main(){
    int n;
    while(cin>>n){
       if(cin.eof()) break; 
-      mat w(15,vec(15,INF));;
+      mat w(15,vec(15,INF));
       
       int m=0;
       for(int i=0; i<n; i++){
@@ -26,7 +26,7 @@ int main(){
       }
       for(int k=0; k<m; k++){
           for(int i=0; i<m; i++){
-              for(int j=0; j<n; j++){
+              for(int j=0; j<m; j++){
                    w[i][j] = min(w[i][j], w[i][k] + w[k][j]);
               }
           }
