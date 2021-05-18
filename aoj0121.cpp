@@ -17,45 +17,48 @@ typedef pair<int,string> Pr;
 
 
 int main(){
-  //進む方向
-  int d[4] = {-1,1,-4,4};
-  //mapで連想配列を作る
-  map<string,int> ans;
-  //最終形の設定
-  ans["01234567"] = 0;
+  int dx[4] = {-1,1,-4,4}; //進む方向(文字列だから横だけ)
+
+  map<string,int> ans;   //mapで連想配列を作る
+  
+  ans["01234567"] = 0; //01234567の場合は何も動かさないので0
 
   queue <Pr> que;
-  //queにパズルの状態と回数をぶちこむ
-  que.push(Pr(0,"01234567"));
 
-  while(size(que)){
-    //キューの先頭を取り出す
-    Pr p = que.front(); que.pop();
-    //パズルの状態に対応したansを代入
+  que.push(Pr(0,"01234567")); //キューにパズルの状態と移動回数をぶちこむ
+
+  while(!que.empty()){ //キューの中身が空になるまで
+
+    Pr p = que.front();  //キューの先頭を取り出す
+    que.pop();
+
     int k = ans[p.second];
     rep(i,0,4){
-      //pの一つ目(int)の要素とdを足す
-      int n = p.first + d[i];
+
+      int n = p.first + dx[i]; //次の探索場所
+
       if(i==0 && n==3){
-        continue;
+        continue;  //探索済みはスルー
       }else if(i==1 && n==4){
         continue;
       }else if(n >= 0 && n < 8){
         string tmp;
-        //tmpに二つ目の要素(string)を代入
+  
         tmp = p.second;
-        //一つ目の要素に対応させる。
-        tmp[p.first] = tmp[n];
-        //同じところを辿らないように
-        tmp[n] = '0'; 
         
+        tmp[p.first] = tmp[n]; 
+       
+        tmp[n] = '0'; //同じところを辿らないように
+
         if(ans.find(tmp) == ans.end()){
-	      ans[tmp] = k + 1;
-	      que.push(Pr(n,tmp));
+	        ans[tmp] = k + 1;
+         
+	        que.push(Pr(n,tmp)); //次の状態をキューに格納
+        }
 	    }
-      }
     }
   }
+
   string s;
   char t;
   while(1){
@@ -65,9 +68,12 @@ int main(){
     s+=t;
     rep(i,0,7){
         cin >> t;
+        //文字列に文字を追加していく
         s += t;
     }
+    //文字列に対応した回数を出力する。
     cout << ans[s] << endl;
+    //次の処理のため初期化
     s.clear();
   } 
 
